@@ -22,6 +22,11 @@
                 </div>
 
             </form>
+            <div  id="downloadButtom" class="form-group text-center input-container buttom-right">
+                <button onclick="download('xls')" class="btn btn-success" name="search" >🡇 XLS</button>
+                <button onclick="download('csv')" class="btn btn-success" name="search" >🡇 CSV</button>
+                <button onclick="download('json')" class="btn btn-success" name="search" >🡇 JSON</button>
+            </div>
 
         </div>
     </header>
@@ -53,11 +58,12 @@
                     </div>
                 </div>
             </div>
+        <br/><br/>
         </section>
         <section id="container" id="nodeScreen" class="vh-100">
 
         </section>
-
+        <script src="https://unpkg.com/export-from-json/dist/umd/index.min.js"></script>
         <script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-core.min.js"></script>
         <script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-graph.min.js"></script>
         <script src="https://cdn.anychart.com/releases/8.8.0/js/anychart-data-adapter.min.js"></script>

@@ -2,20 +2,25 @@ const searchedWordInput = document.getElementById('searchedWord');
 const searchButtom = document.getElementById('searchButtom');
 const searchedWordInput2 = document.getElementById('searchedWord2');
 const searchButtom2 = document.getElementById('searchButtom2');
+const downloadButtom = document.getElementById('downloadButtom');
 
 const header = document.getElementById('wordnavbar');
 const mainPage = document.getElementById('initialScreen');
 const visualizerSection = document.getElementById('container');
+
 
 searchButtom.addEventListener('click', updateView);
 searchButtom2.addEventListener('click', function(){
     searchWord(searchedWordInput2);
 });
 
+
+
 let searchedWord = '';
 let rawData = {};
 let words_web = {};
 let group = [];
+let downloadData = [];
 
 async function getData(value) {
     const response = await fetch(`https://desafio-palavra.herokuapp.com/get_data/${value}?format=json`);
@@ -24,10 +29,10 @@ async function getData(value) {
 }
 
 function updateView(){
-    console.log('here');
     mainPage.style.display = 'none';
     visualizerSection.style.display = 'block';
     header.style.display = 'block';
+    downloadButtom.style.display = 'none';
 
     searchWord(searchedWordInput);
 }
@@ -114,7 +119,9 @@ function buildWebGraph() {
     chart.nodes().labels().fontSize(6);
     chart.nodes().labels().fontWeight(600); 
 
+    downloadButtom.style.display = 'block';
     chart.draw();
+    
 }
 
 function randomColor() {
@@ -123,7 +130,42 @@ function randomColor() {
 
 function removeOldGraph(){
     let container = visualizerSection.getElementsByTagName('div')[0];
+    downloadButtom.style.display = 'none';
     if (container) {
         container.remove();
     }
+}
+
+function download(exportType){
+    const fileName = searchedWord;
+    toData().then(data => {
+        window.exportFromJSON({ data, fileName, exportType })
+    });
+    
+}
+
+async function toData(){
+    downloadData = [];
+    console.log(rawData[searchedWord]);
+    for (i in rawData[searchedWord]) {
+        if (rawData[searchedWord][i]['words']){
+            _length = rawData[searchedWord][i]['words'].length;
+            for (let j = 0; j < _length; j++) {
+                let _push = true;
+                for (let x = 0; x < downloadData.length; x++) {
+                    if (!downloadData[x][i]){
+                        downloadData[x][i] = rawData[searchedWord][i]['words'][j];
+                        _push = false;
+                        break;
+                    }
+                }
+                if (_push) {
+                    downloadData.push({
+                        [i] : rawData[searchedWord][i]['words'][j]
+                    })
+                }
+            }
+        }
+    }
+    return downloadData;
 }

@@ -5,16 +5,30 @@
     display: none;
 }
 .wordnavbar{
+    position: static;
     display: none;
 }
 .header-form{
     display: flex;
-    justify-content:center;
+    justify-content:left;
     align-items:center;
+    left: 5%;
+    padding-left: 5%;
 }
 
 .header-form .input-container{
     display:flex;
+    margin: 0 5px;
+}
+
+.buttom-right{
+    right: 5%;
+    top: 2%;
+    position: fixed;
+}
+
+#downloadButtom{
+    display: block;
 }
 
 *
