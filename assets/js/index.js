@@ -8,6 +8,8 @@ const header = document.getElementById('wordnavbar');
 const mainPage = document.getElementById('initialScreen');
 const visualizerSection = document.getElementById('container');
 
+const loadingSection = document.getElementById('loadingSection');
+const loadingText = document.getElementById('loadingText');
 
 searchButtom.addEventListener('click', updateView);
 searchButtom2.addEventListener('click', function(){
@@ -29,23 +31,31 @@ async function getData(value) {
 }
 
 function updateView(){
-    mainPage.style.display = 'none';
-    visualizerSection.style.display = 'block';
-    header.style.display = 'block';
-    downloadButtom.style.display = 'none';
-
-    searchWord(searchedWordInput);
+    searchedWord = searchedWordInput.value;
+    if(!onlySpaces(searchedWord)){
+        mainPage.style.display = 'none';
+        visualizerSection.style.display = 'block';
+        header.style.display = 'block';
+        downloadButtom.style.display = 'none'; 
+        searchWord(searchedWordInput);
+    }
+    
 }
 
 function searchWord(input) {
     searchedWord = input.value;
-    removeOldGraph();
+    
 
     if(!onlySpaces(searchedWord)){
-        getData(searchedWord).then(data => {
+        try{
+            removeOldGraph();
+            getData(searchedWord).then(data => {
             rawData = data;
             grabWordsProperties();
         });
+        } catch (error) {
+            loadingText.innerHTML = 'Não foi possível carregar os dados\n' + error;
+        }
     }else{
         if (spacesAmmount(searchedWord) > 0) {
             alert('Digite uma palavra');
@@ -120,6 +130,7 @@ function buildWebGraph() {
     chart.nodes().labels().fontWeight(600); 
 
     downloadButtom.style.display = 'block';
+    loadingSection.style.display = 'none';
     chart.draw();
     
 }
@@ -131,6 +142,8 @@ function randomColor() {
 function removeOldGraph(){
     let container = visualizerSection.getElementsByTagName('div')[0];
     downloadButtom.style.display = 'none';
+    loadingSection.style.display = 'block';
+    loadingText.innerHTML = 'Carregando...';
     if (container) {
         container.remove();
     }
