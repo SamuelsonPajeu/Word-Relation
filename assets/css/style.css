@@ -4,6 +4,11 @@
 #container{
     display: none;
 }
+
+#loadingSection{
+    display: none;
+}
+
 .wordnavbar{
     position: static;
     display: none;
