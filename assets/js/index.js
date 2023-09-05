@@ -25,7 +25,7 @@ let group = [];
 let downloadData = [];
 
 async function getData(value) {
-    const response = await fetch(`https://desafio-palavra.herokuapp.com/get_data/${value}?format=json`);
+    const response = await fetch(`https://desafio-palavra.onrender.com/get_data/${value}?format=json`);
     const data = await response.json();
     return data;
 }
